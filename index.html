@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>AZYUDS CHAT</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      background: #05010a;
+      background-image: radial-gradient(circle at 20% 30%, rgba(188,19,254,0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(0,242,255,0.15) 0%, transparent 60%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    /* Container Utama */
+    .app-container {
+      width: 100%;
+      max-width: 450px;
+      height: 780px;
+      background: #111b21;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 25px 45px rgba(0,0,0,0.6), 0 0 0 1px rgba(188,19,254,0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .screen { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .hidden { display: none; }
+
+    /* ========= LOGIN + DAFTAR STYLE NEON ========= */
+    .neon-header {
+      background: #05010a;
+      padding: 24px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(188,19,254,0.4);
+    }
+    .neon-title {
+      font-family: 'Orbitron';
+      font-size: 26px;
+      background: linear-gradient(135deg, #bc13fe, #00f2ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .neon-sub {
+      font-size: 10px;
+      color: #7d6ea1;
+      letter-spacing: 2px;
+    }
+    .form-card {
+      padding: 24px 20px;
+    }
+    .input-neon {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(188,19,254,0.4);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      transition: 0.2s;
+    }
+    .input-neon i { color: #bc13fe; width: 32px; }
+    .input-neon input {
+      background: transparent;
+      border: none;
+      color: white;
+      width: 100%;
+      outline: none;
+      font-size: 14px;
+    }
+    .input-neon:focus-within {
+      border-color: #00f2ff;
+      box-shadow: 0 0 8px rgba(0,242,255,0.3);
+    }
+    .btn-neon {
+      background: linear-gradient(135deg, #bc13fe, #00f2ff);
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+    .btn-neon:active { transform: scale(0.98); }
+    .toggle-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #00f2ff;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .info-note {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 11px;
+      color: #7d6ea1;
+    }
+    .footer-mi {
+      margin-top: auto;
+      text-align: center;
+      padding: 18px;
+      font-size: 10px;
+      color: #bc13fe;
+    }
+
+    /* ========= DASHBOARD CHAT (WA STYLE) ========= */
+    .profile-bar {
+      background: #202c33;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #2a3942;
+    }
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #00a884;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: bold;
+      background-size: cover;
+      cursor: pointer;
+    }
+    .profile-info h3 { color: #e9edef; font-size: 1rem; }
+    .profile-info p { font-size: 0.7rem; color: #8696a0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .btn-icon {
+      background: #2a3942;
+      border: none;
+      border-radius: 30px;
+      padding: 4px 12px;
+      font-size: 0.65rem;
+      color: #53bdeb;
+      cursor: pointer;
+    }
+    .search-box {
+      background: #202c33;
+      margin: 12px;
+      border-radius: 28px;
+      display: flex;
+      padding: 6px 12px;
+      gap: 8px;
+    }
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 12px 6px;
+      color: white;
+      outline: none;
+    }
+    .search-box button {
+      background: #00a884;
+      border: none;
+      border-radius: 28px;
+      padding: 0 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .contact-result-card {
+      background: #202c33;
+      margin: 0 12px 12px 12px;
+      border-radius: 20px;
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+    .chat-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-bottom: 1px solid #2a3942;
+      cursor: pointer;
+    }
+    .chat-item:hover { background: #202c33; }
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #2a3942;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+    }
+    .chat-details { flex: 1; }
+    .chat-name { font-weight: 600; color: #e9edef; }
+    .chat-id { font-size: 0.7rem; color: #8696a0; }
+    .chat-preview { font-size: 0.7rem; color: #aebac1; }
+
+    /* Chat Room */
+    .chat-room-header {
+      background: #202c33;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .messages-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .message {
+      max-width: 80%;
+      padding: 8px 14px;
+      border-radius: 18px;
+      font-size: 0.9rem;
+    }
+    .message-out {
+      align-self: flex-end;
+      background: #005c4b;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    .message-in {
+      align-self: flex-start;
+      background: #202c33;
+      color: #e9edef;
+      border-bottom-left-radius: 4px;
+    }
+    .media-preview {
+      max-width: 180px;
+      border-radius: 14px;
+      margin-top: 4px;
+    }
+    .chat-input {
+      background: #202c33;
+      padding: 10px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .chat-input input {
+      flex: 1;
+      background: #2a3942;
+      border: none;
+      border-radius: 28px;
+      padding: 12px 16px;
+      color: white;
+    }
+    .attach-btn, .send-btn {
+      background: none;
+      border: none;
+      font-size: 1.7rem;
+      cursor: pointer;
+      color: #8696a0;
+    }
+    .send-btn {
+      background: #00a884;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      color: black;
+    }
+    .toast-msg {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2a3942;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      z-index: 1000;
+    }
+    .file-input { display: none; }
+    .back-btn {
+      background: none;
+      border: none;
+      color: #e9edef;
+      font-size: 24px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- LAYAR LOGIN & DAFTAR (MULTI AKUN) -->
+  <div id="loginScreen" class="screen">
+    <div class="neon-header">
+      <div class="neon-title">AZYUDS CHAT</div>
+      <div class="neon-sub">✦ kalau belum punya akan Daftar✦</div>
+    </div>
+
+    <div class="form-card">
+      <!-- FORM LOGIN -->
+      <div id="loginFormDiv">
+        <div class="input-neon"><i class="fa-solid fa-user"></i><input type="text" id="loginUsername" placeholder="Username"></div>
+        <div class="input-neon"><i class="fa-solid fa-key"></i><input type="password" id="loginPassword" placeholder="Password"></div>
+        <button class="btn-neon" id="loginBtn">LOGIN </button>
+        <div class="toggle-link" id="showRegisterBtn">✨ Belum punya akun? Daftar Sekarang click INI </div>
+      </div>
+
+      <!-- FORM DAFTAR (MULTI AKUN) -->
+      <div id="registerFormDiv" style="display: none;">
+        <div class="input-neon"><i class="fa-solid fa-user-plus"></i><input type="text" id="regUsername" placeholder="Username baru"></div>
+        <div class="input-neon"><i class="fa-solid fa-lock"></i><input type="password" id="regPassword" placeholder="Password"></div>
+        <button class="btn-neon" id="registerBtn">DAFTAR & DAPATKAN ID</button>
+        <div class="toggle-link" id="showLoginBtn">🔐 Sudah punya akun? Login</div>
+      </div>
+      <div class="info-note"><i class="fa-regular fa-id-card"></i> Setiap daftar dapat ID unik (10001, 10002, ...)</div>
+    </div>
+    <div class="footer-mi">© 2026 AZYUDS • CHAT + MEDIA</div>
+  </div>
+
+  <!-- DASHBOARD CHAT -->
+  <div id="dashboardScreen" class="screen hidden">
+    <div class="profile-bar">
+      <div class="avatar" id="profileAvatar">👤</div>
+      <div class="profile-info">
+        <h3 id="profileName">User</h3>
+        <p><span id="profileId">ID: -</span> <button class="btn-icon" id="copyIdBtn">📋 Salin ID</button> <button class="btn-icon" id="editProfilePicBtn">🖼️ Ganti Foto</button></p>
+        <input type="file" id="avatarUpload" accept="image/*" class="file-input">
+      </div>
+      <button id="logoutBtn" style="background:none; border:none; color:#e9edef; font-size:24px;">🚪</button>
+    </div>
+    <div class="search-box">
+      <input type="number" id="searchIdInput" placeholder="Cari ID pengguna lain">
+      <button id="searchBtn">Cari</button>
+    </div>
+    <div id="searchResultArea"></div>
+    <div class="chat-list" id="chatListContainer"><div style="padding:20px; text-align:center; color:#8696a0;">💬 Cari teman dengan ID</div></div>
+  </div>
+
+  <!-- CHAT ROOM -->
+  <div id="chatRoomScreen" class="screen hidden">
+    <div class="chat-room-header">
+      <button class="back-btn" id="backChatBtn">←</button>
+      <div class="avatar" style="width:44px;height:44px;" id="chatRoomAvatar"></div>
+      <div style="flex:1;"><strong id="chatRoomName">Kontak</strong><br><span style="font-size:11px; color:#8696a0;" id="chatRoomId">ID</span></div>
+    </div>
+    <div class="messages-area" id="chatMessages"></div>
+    <div class="chat-input">
+      <button class="attach-btn" id="attachMediaBtn">📎</button>
+      <input type="text" id="messageInput" placeholder="Ketik pesan...">
+      <button class="send-btn" id="sendMsgBtn">➤</button>
+      <input type="file" id="mediaFileInput" accept="image/*,video/mp4,video/webm" class="file-input">
+    </div>
+  </div>
+  <div id="toastMsg" class="toast-msg hidden"></div>
+</div>
+
+<script>
+  // ========== DATA MULTI AKUN (BISA REGIST SEBANYAK MUNGKIN) ==========
+  let users = [];        // { id, username, password, name, avatarBase64 }
+  let chats = {};        // "id1_id2" : { participants, messages: [{senderId, type, content, time}] }
+  let currentUserId = null;
+  let currentContactId = null;
+
+  function saveData() { 
+    localStorage.setItem('miyako_users', JSON.stringify(users)); 
+    localStorage.setItem('miyako_chats', JSON.stringify(chats)); 
+  }
+
+  function showToast(msg) { 
+    const toast = document.getElementById('toastMsg'); 
+    toast.innerText = msg; 
+    toast.classList.remove('hidden'); 
+    setTimeout(()=>toast.classList.add('hidden'), 2000); 
+  }
+
+  function getUserById(id) { return users.find(u => u.id === id); }
+  function getChatId(a,b) { let ids=[a,b].sort(); return `${ids[0]}_${ids[1]}`; }
+  function ensureChat(id1,id2) { let cid=getChatId(id1,id2); if(!chats[cid]) chats[cid]={participants:[id1,id2], messages:[]}; return chats[cid]; }
+
+  // Generate ID baru (otomatis increment dari ID terbesar)
+  function generateNewId() {
+    if(users.length === 0) return 10001;
+    let maxId = Math.max(...users.map(u => u.id));
+    return maxId + 1;
+  }
+
+  // REGISTRASI MULTI AKUN (TIDAK HILANG)
+  function registerAccount(username, password) {
+    if(!username || !password) { alert("Isi username dan password!"); return false; }
+    if(users.some(u => u.username === username)) { alert("Username sudah terdaftar!"); return false; }
+    const newId = generateNewId();
+    const newUser = { id: newId, username: username, password: password, name: username, avatarBase64: null };
+    users.push(newUser);
+    saveData();
+    alert(`✅ REGISTRASI BERHASIL!\nID: ${newId}\nUsername: ${username}\nSILAKAN LOGIN.`);
+    // Tampilkan form login lagi setelah daftar
+    document.getElementById('registerFormDiv').style.display = 'none';
+    document.getElementById('loginFormDiv').style.display = 'block';
+    return true;
+  }
+
+  function login(username, password) {
+    const user = users.find(u => u.username === username && u.password === password);
+    if(user) {
+      currentUserId = user.id;
+      saveData();
+      showDashboard();
+      showToast(`Selamat datang, ${user.name}`);
+    } else { alert("Username atau password salah!"); }
+  }
+
+  // Dashboard & Chat Logic
+  function renderChatList() {
+    const container = document.getElementById('chatListContainer');
+    if(!currentUserId) return;
+    const userChats = Object.values(chats).filter(c => c.participants.includes(currentUserId));
+    if(userChats.length===0) { container.innerHTML='<div style="padding:20px;text-align:center;color:#8696a0;">💬 Belum ada chat, cari kontak dengan ID</div>'; return; }
+    container.innerHTML = '';
+    userChats.forEach(chat => {
+      const otherId = chat.participants.find(id => id !== currentUserId);
+      const contact = getUserById(otherId);
+      if(!contact) return;
+      const lastMsg = chat.messages.length ? chat.messages[chat.messages.length-1] : null;
+      let preview = "Mulai chat";
+      if(lastMsg) {
+        if(lastMsg.type === 'text') preview = (lastMsg.senderId===currentUserId ? "Anda: ":"") + lastMsg.content.substring(0,30);
+        else if(lastMsg.type === 'image') preview = "📷 Foto";
+        else if(lastMsg.type === 'video') preview = "🎥 Video";
+      }
+      const avatarBg = contact.avatarBase64 ? `url('${contact.avatarBase64}') center/cover` : '#2a3942';
+      const chatDiv = document.createElement('div'); chatDiv.className='chat-item';
+      chatDiv.innerHTML = `
+        <div class="chat-avatar" style="background:${avatarBg};">${!contact.avatarBase64 ? contact.name.charAt(0).toUpperCase() : ''}</div>
+        <div class="chat-details"><div class="chat-name">${escapeHtml(contact.name)}</div><div class="chat-id">ID: ${contact.id}</div><div class="chat-preview">${escapeHtml(preview)}</div></div>
+      `;
+      chatDiv.addEventListener('click', () => openChatRoom(contact.id));
+      container.appendChild(chatDiv);
+    });
+  }
+
+  function openChatRoom(contactId) {
+    if(!currentUserId) return;
+    currentContactId = contactId;
+    const contact = getUserById(contactId);
+    if(!contact) return;
+    document.getElementById('dashboardScreen').classList.add('hidden');
+    document.getElementById('chatRoomScreen').classList.remove('hidden');
+    document.getElementById('chatRoomName').innerHTML = contact.name;
+    document.getElementById('chatRoomId').innerHTML = `ID: ${contact.id} <button class="btn-icon" id="copyChatIdBtn" style="font-size:10px;">Salin</button>`;
+    const avatarElem = document.getElementById('chatRoomAvatar');
+    if(contact.avatarBase64) { avatarElem.style.background=`url('${contact.avatarBase64}') center/cover`; avatarElem.innerText=''; } 
+    else { avatarElem.style.background='#2a3942'; avatarElem.innerText=contact.name.charAt(0).toUpperCase(); }
+    renderMessages();
+    document.getElementById('copyChatIdBtn')?.addEventListener('click', () => { navigator.clipboard.writeText(contact.id.toString()); showToast(`ID ${contact.id} disalin`); });
+  }
+
+  function renderMessages() {
+    const container = document.getElementById('chatMessages');
+    if(!currentUserId || !currentContactId) return;
+    const chat = chats[getChatId(currentUserId, currentContactId)];
+    if(!chat || !chat.messages.length) { container.innerHTML='<div style="text-align:center;color:#8696a0;margin-top:30px;">✨ Kirim pesan atau foto/video</div>'; return; }
+    container.innerHTML = '';
+    chat.messages.forEach(msg => {
+      const isMe = msg.senderId === currentUserId;
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${isMe ? 'message-out' : 'message-in'}`;
+      if(msg.type === 'text') {
+        msgDiv.innerHTML = `<div>${escapeHtml(msg.content)}</div><div class="message-time" style="font-size:0.6rem;color:#8696a0;margin-top:4px;">${msg.time}</div>`;
+      } else if(msg.type === 'image') {
+        msgDiv.innerHTML = `<img src="${msg.content}" class="media-preview" onclick="window.open('${msg.content}')"/><div class="message-time">📷 Foto • ${msg.time}</div>`;
+      } else if(msg.type === 'video') {
+        msgDiv.innerHTML = `<video src="${msg.content}" controls style="max-width:170px; border-radius:14px;"></video><div class="message-time">🎥 Video • ${msg.time}</div>`;
+      }
+      container.appendChild(msgDiv);
+    });
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function sendMessage(type, content) {
+    if(!currentUserId || !currentContactId) return;
+    if(type==='text' && !content.trim()) return;
+    const chat = ensureChat(currentUserId, currentContactId);
+    const newMsg = { senderId: currentUserId, type: type, content: content, time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) };
+    chat.messages.push(newMsg);
+    saveData();
+    if(type==='text') document.getElementById('messageInput').value = '';
+    renderMessages();
+    renderChatList();
+  }
+
+  function searchContact() {
+    const idVal = document.getElementById('searchIdInput').value.trim();
+    const idNum = parseInt(idVal);
+    const resultDiv = document.getElementById('searchResultArea');
+    if(isNaN(idNum)) { resultDiv.innerHTML = '<div style="color:#ff5e5e;margin:0 12px;">Masukkan ID angka</div>'; return; }
+    const contact = getUserById(idNum);
+    if(!contact) { resultDiv.innerHTML = '<div style="color:#ffa500;margin:0 12px;">❌ ID tidak ditemukan</div>'; return; }
+    if(contact.id === currentUserId) { resultDiv.innerHTML = '<div style="color:#ffa500;margin:0 12px;">Tidak bisa chat sendiri</div>'; return; }
+    const bg = contact.avatarBase64 ? `url('${contact.avatarBase64}') center/cover` : '#2a3942';
+    resultDiv.innerHTML = `
+      <div class="contact-result-card">
+        <div class="chat-avatar" style="background:${bg};">${!contact.avatarBase64 ? contact.name.charAt(0).toUpperCase() : ''}</div>
+        <div><strong>${escapeHtml(contact.name)}</strong><br><span style="font-size:11px;">ID: ${contact.id}</span></div>
+        <button id="directChatBtn" style="margin-left:auto; background:#00a884; border:none; border-radius:28px; padding:8px 18px;">Chat</button>
+      </div>
+    `;
+    document.getElementById('directChatBtn')?.addEventListener('click', () => { openChatRoom(contact.id); resultDiv.innerHTML = ''; document.getElementById('searchIdInput').value = ''; });
+  }
+
+  function updateProfileUI() {
+    const user = getUserById(currentUserId);
+    if(user) {
+      document.getElementById('profileName').innerText = user.name;
+      document.getElementById('profileId').innerHTML = `ID: ${user.id}`;
+      const ava = document.getElementById('profileAvatar');
+      if(user.avatarBase64) { ava.style.background = `url('${user.avatarBase64}') center/cover`; ava.innerText = ''; }
+      else { ava.style.background = '#00a884'; ava.innerText = user.name.charAt(0).toUpperCase(); }
+    }
+  }
+
+  function showDashboard() {
+    document.getElementById('loginScreen').classList.add('hidden');
+    document.getElementById('dashboardScreen').classList.remove('hidden');
+    document.getElementById('chatRoomScreen').classList.add('hidden');
+    updateProfileUI();
+    renderChatList();
+    document.getElementById('searchResultArea').innerHTML = '';
+  }
+
+  function logout() { currentUserId = null; currentContactId = null; document.getElementById('loginScreen').classList.remove('hidden'); document.getElementById('dashboardScreen').classList.add('hidden'); document.getElementById('chatRoomScreen').classList.add('hidden'); }
+
+  // Setup event dan toggle form
+  function setupEvents() {
+    document.getElementById('loginBtn').addEventListener('click', () => login(document.getElementById('loginUsername').value, document.getElementById('loginPassword').value));
+    document.getElementById('registerBtn').addEventListener('click', () => registerAccount(document.getElementById('regUsername').value, document.getElementById('regPassword').value));
+    document.getElementById('showRegisterBtn').addEventListener('click', () => { document.getElementById('loginFormDiv').style.display = 'none'; document.getElementById('registerFormDiv').style.display = 'block'; });
+    document.getElementById('showLoginBtn').addEventListener('click', () => { document.getElementById('registerFormDiv').style.display = 'none'; document.getElementById('loginFormDiv').style.display = 'block'; });
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+    document.getElementById('copyIdBtn').addEventListener('click', () => { if(currentUserId) { navigator.clipboard.writeText(currentUserId.toString()); showToast(`ID ${currentUserId} disalin`); } });
+    document.getElementById('searchBtn').addEventListener('click', searchContact);
+    document.getElementById('sendMsgBtn').addEventListener('click', () => sendMessage('text', document.getElementById('messageInput').value));
+    document.getElementById('backChatBtn').addEventListener('click', () => { document.getElementById('chatRoomScreen').classList.add('hidden'); document.getElementById('dashboardScreen').classList.remove('hidden'); renderChatList(); currentContactId = null; });
+    document.getElementById('messageInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') sendMessage('text', e.target.value); });
+    
+    // Avatar
+    const avatarInput = document.getElementById('avatarUpload');
+    document.getElementById('editProfilePicBtn').addEventListener('click', () => avatarInput.click());
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if(file && currentUserId) {
+        const reader = new FileReader();
+        reader.onload = (ev) => { const user = getUserById(currentUserId); if(user) { user.avatarBase64 = ev.target.result; saveData(); updateProfileUI(); renderChatList(); if(currentContactId) openChatRoom(currentContactId); showToast("Foto profil diperbarui!"); } };
+        reader.readAsDataURL(file);
+      }
+    });
+    // Media
+    const mediaInput = document.getElementById('mediaFileInput');
+    document.getElementById('attachMediaBtn').addEventListener('click', () => mediaInput.click());
+    mediaInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if(!file) return;
+      const type = file.type.startsWith('image/') ? 'image' : (file.type.startsWith('video/') ? 'video' : null);
+      if(!type) { showToast("Hanya support gambar/video"); return; }
+      const reader = new FileReader();
+      reader.onload = (ev) => { sendMessage(type, ev.target.result); mediaInput.value = ''; };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m; }); }
+
+  // Load data awal, jika kosong buat beberapa demo tapi tetap bisa regist banyak
+  function loadInitial() {
+    const storedUsers = localStorage.getItem('miyako_users');
+    const storedChats = localStorage.getItem('miyako_chats');
+    if(storedUsers) users = JSON.parse(storedUsers); 
+    else {
+      // Contoh awal biar ada kontak
+      users = [
+        { id:10001, username:"budi", password:"123", name:"Budi Santoso", avatarBase64:null },
+        { id:10002, username:"siti", password:"123", name:"Siti Aminah", avatarBase64:null }
+      ];
+    }
+    if(storedChats) chats = JSON.parse(storedChats); else chats = {};
+    saveData();
+  }
+
+  loadInitial();
+  setupEvents();
+  if(currentUserId) showDashboard();
+</script>
+</body>
+</html>
